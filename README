@@ -1,0 +1,23 @@
+General Information
+-----------------------------------------------------
+The contents of this file describe how to use the I Smell Something Funny packet analyzer.
+I Smell Something Funny is a packet analyzer developed by Andon Mitsov as a course project for his 
+Diploma za Sredno Specialno Obrazovanie. The application analyzes packets that travel through the specified network port
+and prints the result in the applications' UI. It is an amatuer attempt to make something that works like Wireshark.
+But it works(kinda).
+ 
+Credits
+-----------------------------------------------------
+Author: Andon Yordanov Mitsov
+
+Acknowledgmets
+------------------------------------------------------
+I would like to thank my course work advisor Lubomir Chorbadjiev for the help he has given me. 
+I would also like to thank the tcpdump.org team for their effort in making the pcap library 
+and the extensive documentationthey provide for it. Without them this application would be a 
+lot harder to make.
+
+Licensing information
+---------------------------------------
+The licensing information for this application is described in the LICENSE file. 
+
