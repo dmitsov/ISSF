@@ -52,13 +52,19 @@ ISSFApplication::ISSFApplication(int &argc, char **argv)
     m_sharedMemory = new SharedMemoryController();
     QPushButton *showFullInfo = main->getShowInfoButton();
     QPushButton *continueButton = main->getContinueButton();
-    QVector<QPushButton*> *buttons = main->getProcessButtons();
+    QPushButton* startButton = main->getStartButton();
+    QPushButton* stopButton = main->getStopButton();
+    QPushButton* pauseButton = main->getPauseButton();
+
+
+
     m_workerThread = new Thread(loopThread,m_dev,m_sharedMemory);
 
     m_sharedMemory->setInterface(ETHER_IF);
 
-    connect(buttons->at(0),SIGNAL(clicked()),this,SLOT(onStartWorkerThread()));
-    connect(buttons->at(2),SIGNAL(clicked()),this,SLOT(onStopWorkerThread()));
+    connect(startButton,SIGNAL(clicked()),this,SLOT(onStartWorkerThread()));
+    connect(pauseButton,SIGNAL(clicked()),this,SLOT(onPauseWorkerThread()));
+    connect(stopButton,SIGNAL(clicked()),this,SLOT(onStopWorkerThread()));
     connect(this,SIGNAL(packetsAdded()),this,SLOT(onPacketsAdded()));
     connect(apply,SIGNAL(clicked()),this,SLOT(onFilterApplied()));
     connect(interface,SIGNAL(clicked()),this,SLOT(onInterfaceClicked()));
@@ -92,12 +98,13 @@ void ISSFApplication::onPacketsAdded(){
         stringstream sPacketStream;
         sPacketStream << m_AddedPackets << ". ";
 
-        string packetInfo = sPacketStream.str();
-        packetInfo += packet.AbridgedHeadersInfo();
+        sPacketStream << packet.AbridgedHeadersInfo() << endl
+                      << "--------------------------------------------------------" ;
 
-        QString qEtherInfo(packetInfo.c_str());
+        QString qInfo(sPacketStream.str().c_str());
 
-        m_PacketsCptrdField->append(qEtherInfo);
+
+        m_PacketsCptrdField->append(qInfo);
 
 
     }
@@ -187,27 +194,10 @@ pcap_t* ISSFApplication::openPcapInterface(const char *interface, u_int8_t ifTyp
     pcap_t *pcap_device = NULL;
     memset(errbuf,0,PCAP_ERRBUF_SIZE);
 
-   // if(ifType == ETHER_IF){
         pcap_device = pcap_open_live(interface,PACKET_BUFFSIZE,0,0,errbuf);
         if(!pcap_device){
             fprintf(stderr,"Error in opening: %s",errbuf);
         }
-   // } else {
-        /*pcap_device = pcap_open_live("wlan0",PACKET_BUFFSIZE,1,0,errbuf);
-        if(!pcap_device){
-                fprintf(stderr,"Error in opening: %s",errbuf);
-        }*/
-
-        //opening a monitor interface
-     //   pcap_device = pcap_create("",errbuf);
-
-
-      //  pcap_set_rfmon(pcap_device,1);
-      //  pcap_set_promisc(pcap_device,1);
-       // pcap_set_snaplen(pcap_device,PACKET_BUFFSIZE);
-      //  pcap_set_timeout(pcap_device,0);
-     //   pcap_activate(pcap_device);
-    //}
 
 
     return pcap_device;

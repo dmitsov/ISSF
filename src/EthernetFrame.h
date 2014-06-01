@@ -12,7 +12,7 @@
 class EthernetFrame: public LinkLayerData
 {
 private:
-    ethernet_info ethernetHeader;
+    ethernet_info m_ethernetHeader;
 public:
     EthernetFrame(const u_char* packet);
     EthernetFrame(const EthernetFrame& other);

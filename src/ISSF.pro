@@ -21,7 +21,6 @@ SOURCES +=\
     IPPacket.cpp \
     findname.cpp \
     EthernetFrame.cpp \
-    dialog.cpp \
     main.cpp \
     ThreadControll/Thread.cpp \
     SharedMemoryClasses/Packet.cpp \
@@ -33,7 +32,9 @@ SOURCES +=\
     FilterIP.cpp \
     FilterTCP.cpp \
     HelperFunctions.cpp \
-    HTTPPacket.cpp
+    HTTPPacket.cpp \
+    UDPSegment.cpp \
+    FilterUDP.cpp
 
 HEADERS  += MainWindow.h \
     WLANFrame.h \
@@ -44,7 +45,6 @@ HEADERS  += MainWindow.h \
     HeaderTypes.h \
     findname.h \
     EthernetFrame.h \
-    dialog.h \
     include/LinkLayerData.h \
     SharedMemoryClasses/SharedMemoryController.h \
     SharedMemoryClasses/Packet.h \
@@ -57,9 +57,10 @@ HEADERS  += MainWindow.h \
     FilterIP.h \
     FilterTCP.h \
     FilterMacrosHeader.h \
-    HTTPPacket.h
-FORMS    += MainWindow.ui \
-    dialog.ui
+    HTTPPacket.h \
+    FilterUDP.h \
+    UDPSegment.h
+FORMS    += MainWindow.ui
 
 OTHER_FILES += \
     Untitled1 \

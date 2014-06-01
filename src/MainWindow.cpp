@@ -10,19 +10,19 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    buttons = new QVector<QPushButton*>();
-    buttons->push_back(ui->playButton);
-    buttons->push_back(ui->pauseButton);
-    buttons->push_back(ui->stopButton);
 
-    applyButton = ui->applyButton;
-    filterField = ui->filterField;
+    m_startButton = ui->playButton;
+    m_pauseButton = ui->pauseButton;
+    m_stopButton = ui->stopButton;
+
+    m_applyButton = ui->applyButton;
+    m_filterField = ui->filterField;
     m_packetsCptrdField = ui->packetsCptrd;
     m_packetFullInfoField = ui->packetInfo;
-    interfaceButton = ui->Interface;
+    m_interfaceButton = ui->Interface;
 
-    showFullInfoButton = ui->m_ShowFullInfoButton;
-    continueButton = ui->m_continueButton;
+    m_showFullInfoButton = ui->m_ShowFullInfoButton;
+    m_continueButton = ui->m_continueButton;
 
 
 }

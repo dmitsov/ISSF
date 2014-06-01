@@ -23,13 +23,11 @@ using namespace std;
 
 //constructor
 Packet::Packet(const u_char *packet, const char *timeRecv, u_int8_t ifType)
-    :m_etherHeader(NULL),m_ipHeader(NULL),
-     m_wlanHeader(NULL),m_tcpHeader(NULL),
-     m_httpHeader(NULL), m_timeOfReceiving(new string(timeRecv))
+    :m_timeOfReceiving(new string(timeRecv))
 {
     u_int16_t frameType;
     LinkLayerData *link = NULL;
-
+    const u_char* applicationLayer;
     if(ifType == ETHER_IF){
         m_etherHeader = new EthernetFrame(packet);
         frameType = m_etherHeader->getFrameType();
@@ -46,14 +44,24 @@ Packet::Packet(const u_char *packet, const char *timeRecv, u_int8_t ifType)
         if(m_ipHeader->getProtocolType() == IP_PROTO_TCP){
             const u_char *tcpSegm = m_ipHeader->TransportLayerSegment();
             m_tcpHeader = new TCPSegment(tcpSegm);
-            if(m_tcpHeader->ApplicationLayerPacket()){
-                m_httpHeader = new HTTPPacket((char*)m_tcpHeader->
-                                              ApplicationLayerPacket());
-            }
+            applicationLayer = m_tcpHeader->ApplicationLayerPacket();
+
+
+        } else if(m_ipHeader->getProtocolType() == IP_PROTO_UDP){
+            const u_char* udpSegm = m_ipHeader->TransportLayerSegment();
+            m_udpHeader = new UDPSegment(udpSegm);
+            applicationLayer = m_udpHeader->ApplicationLayerSegment();
         }
     }
 
 
+    if(applicationLayer){
+        string temp((const char*)applicationLayer);
+        if(strstr((const char*)applicationLayer, "/HTTP/1.")){
+        m_httpHeader = new HTTPPacket((char*)m_tcpHeader->
+                                      ApplicationLayerPacket());
+        }
+    }
 
     SetPtrsToNull();
 }
@@ -122,6 +130,19 @@ Packet& Packet::operator=(const Packet& other)
         }
     }
 
+    if(other.m_udpHeader){
+        if(m_udpHeader){
+            memcpy(m_udpHeader,other.m_udpHeader,sizeof(UDPSegment));
+        } else {
+            m_udpHeader = new UDPSegment(*other.m_udpHeader);
+        }
+    } else {
+        if(m_udpHeader){
+            delete m_udpHeader;
+            m_udpHeader = NULL;
+        }
+    }
+
     if(other.m_httpHeader){
         if(m_httpHeader){
             memcpy(m_httpHeader,other.m_httpHeader,sizeof(HTTPPacket));
@@ -134,7 +155,7 @@ Packet& Packet::operator=(const Packet& other)
             m_httpHeader = NULL;
         }
     }
-
+    return *this;
 }
 
 string Packet::ethernetHeaderInfo() const {
@@ -196,9 +217,15 @@ QString Packet::HeadersInfo() const{
         headersString.append("\n------------------\n");
     }
 
+    if(m_udpHeader){
+        headersString.append(udpHeaderInfo().c_str());
+        headersString.append("\n------------------\n");
+    }
+
     if(m_httpHeader){
         headersString += m_httpHeader->httpHeaderInfo();
     }
+
 
     return headersString;
 }
@@ -207,7 +234,7 @@ QString Packet::HeadersInfo() const{
 string Packet::AbridgedHeadersInfo() const{
     string temps;
 
-    temps += *(this->m_timeOfReceiving);
+    temps += string(this->m_timeOfReceiving->c_str());
 
 
     temps += "Destination MAC: ";
@@ -267,6 +294,16 @@ string Packet::tcpHeaderInfo() const{
              << "Urgent Pointer: " << m_tcpHeader->getUrgentPointer() << endl;
 
     return sTcpInfo.str();
+}
+string Packet::udpHeaderInfo() const{
+    stringstream sUDPInfo;
+
+    sUDPInfo << "Source Port: " << m_udpHeader->getSrcPort() << endl
+             << "Destination Port: " << m_udpHeader->getDstPort() << endl
+             << "Length: " << m_udpHeader->getLength() << endl
+             << "Checksum: " << m_udpHeader->getChecksum() << endl;
+
+    return sUDPInfo.str();
 }
 
 string Packet::wlanHeaderInfo() const{

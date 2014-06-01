@@ -16,7 +16,7 @@
 class WLANFrame: public LinkLayerData
 {
 private:
-    wlan_info wlanHeadr;
+    wlan_info m_wlanHeadr;
 
 
 public:

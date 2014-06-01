@@ -19,16 +19,25 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QVector<QPushButton*>* getProcessButtons(){
-        return buttons;
+    QPushButton* getStartButton(){
+        return m_startButton;
     }
 
+    QPushButton* getStopButton(){
+        return m_stopButton;
+    }
+
+    QPushButton* getPauseButton(){
+        return m_pauseButton;
+    }
+
+
     QPushButton* getApplyButton(){
-        return applyButton;
+        return m_applyButton;
     }
 
     QTextEdit* getFilterField(){
-        return filterField;
+        return m_filterField;
     }
 
     QTextBrowser* getPacketsCptrdField(){
@@ -40,29 +49,31 @@ public:
     }
 
     QPushButton* getInterfaceButton(){
-        return interfaceButton;
+        return m_interfaceButton;
     }
 
     QPushButton* getShowInfoButton(){
-        return showFullInfoButton;
+        return m_showFullInfoButton;
     }
 
     QPushButton* getContinueButton(){
-        return continueButton;
+        return m_continueButton;
     }
 
 private:
     Ui::MainWindow *ui;
-    QVector<QPushButton*> *buttons;
+    QPushButton* m_startButton;
+    QPushButton* m_stopButton;
+    QPushButton* m_pauseButton;
 
-    QPushButton *applyButton;
-    QPushButton *interfaceButton;
-    QPushButton *showFullInfoButton;
-    QPushButton *continueButton;
+    QPushButton* m_applyButton;
+    QPushButton* m_interfaceButton;
+    QPushButton* m_showFullInfoButton;
+    QPushButton* m_continueButton;
 
-    QTextEdit *filterField;
-    QTextBrowser *m_packetsCptrdField;
-    QTextBrowser *m_packetFullInfoField;
+    QTextEdit* m_filterField;
+    QTextBrowser* m_packetsCptrdField;
+    QTextBrowser* m_packetFullInfoField;
 };
 
 

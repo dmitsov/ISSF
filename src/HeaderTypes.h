@@ -25,7 +25,9 @@
 #define IP_ADDR_LEN 4
 
 #define TCP_HEADER_LENGTH 20
+#define UDP_HEADER_LENGTH 8
 #define IP_PROTO_TCP 0x06
+#define IP_PROTO_UDP 0x11
 
 #define IP_RF 0x8000
 #define IP_DF 0x4000
@@ -93,5 +95,14 @@ typedef struct wlan_info{
 
 
 }WlanInfo;
+
+
+typedef struct udp_info{
+
+    u_int16_t src_port;
+    u_int16_t dst_port;
+    u_int16_t length;
+    u_int16_t checksum;
+} udp_info;
 
 #endif

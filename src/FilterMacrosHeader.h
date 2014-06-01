@@ -6,6 +6,7 @@
 #define ETHER_PROTO(protoStr)!strcmp(protoStr,"ether")
 #define IP_PROTO(protoStr) !strcmp(protoStr,"ip")
 #define TCP_PROTO(protoStr) !strcmp(protoStr,"tcp")
+#define UDP_PROTO(protoStr) !strcmp(protoStr,"udp")
 
 #define MAC_ADDRESS_SRC(etherField) !strcmp(etherField,"srcAddr")
 #define MAC_ADDRESS_DST(etherField) !strcmp(etherField,"dstAddr")
@@ -28,6 +29,11 @@
 #define TCP_SEQ_NUM(tcpField) !strcmp(tcpField,"seq")
 #define TCP_FLAGS(tcpField) !strcmp(tcpField,"flags")
 #define TCP_WINDOW(tcpField) !strcmp(tcpField,"window")
+
+#define UDP_SRC_PORT(udpField) !strcmp(udpField,"src_port")
+#define UDP_DST_PORT(udpField) !strcmp(udpField,"src_port")
+#define UDP_LENGTH(udpField) !strcmp(udpField,"src_port")
+#define UDP_CHECKSUM(udpField) !strcmp(udpField,"checksum")
 
 
 #define OPERATION_EQUAL(operation) !strcmp(operation,"==")

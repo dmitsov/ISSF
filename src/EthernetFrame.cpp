@@ -12,17 +12,17 @@
 EthernetFrame::EthernetFrame(const u_char *packet)
 :LinkLayerData(packet)
 {
-    memset(&ethernetHeader,0,sizeof(ethernet_info));
-    memcpy(&ethernetHeader.ether_dest_addr,packet,6);
-    memcpy(&ethernetHeader.ether_source_addr,(packet+6),6);
-    memcpy(&ethernetHeader.ether_type,(packet+12),2);
+    memset(&m_ethernetHeader,0,sizeof(ethernet_info));
+    memcpy(&m_ethernetHeader.ether_dest_addr,packet,6);
+    memcpy(&m_ethernetHeader.ether_source_addr,(packet+6),6);
+    memcpy(&m_ethernetHeader.ether_type,(packet+12),2);
 }
 
 EthernetFrame::EthernetFrame(const EthernetFrame &other)
 :LinkLayerData(other.m_packet)
 {
-    memset(&ethernetHeader,0,sizeof(ethernet_info));
-    memcpy(&ethernetHeader,&(other.ethernetHeader),sizeof(ethernet_info));
+    memset(&m_ethernetHeader,0,sizeof(ethernet_info));
+    memcpy(&m_ethernetHeader,&(other.m_ethernetHeader),sizeof(ethernet_info));
 }
 
 EthernetFrame::~EthernetFrame()
@@ -31,15 +31,15 @@ EthernetFrame::~EthernetFrame()
 }
 
 char* EthernetFrame::getSourceMACAddress() const {
-    return MACtoCString(ethernetHeader.ether_source_addr);
+    return MACtoCString(m_ethernetHeader.ether_source_addr);
 }
 
 char* EthernetFrame::getDestinationMACAddress() const {
-    return MACtoCString(ethernetHeader.ether_dest_addr);
+    return MACtoCString(m_ethernetHeader.ether_dest_addr);
 }
 
 u_short EthernetFrame::getFrameType(){
-    return ethernetHeader.ether_type;
+    return m_ethernetHeader.ether_type;
 }
 
 const u_char* EthernetFrame::NetworkLayerPacket(){

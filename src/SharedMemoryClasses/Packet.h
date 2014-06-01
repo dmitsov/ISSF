@@ -10,19 +10,21 @@
 #include "IPPacket.h"
 #include "TCPSegment.h"
 #include "HTTPPacket.h"
-
+#include "UDPSegment.h"
 
 using namespace std;
 class Packet{
 private:
 
     EthernetFrame *m_etherHeader = NULL;
-    WLANFrame *m_wlanHeader = NULL;
-    IPPacket *m_ipHeader = NULL;
-    TCPSegment *m_tcpHeader = NULL;
-    HTTPPacket *m_httpHeader = NULL;
+    WLANFrame* m_wlanHeader = NULL;
+    IPPacket* m_ipHeader = NULL;
+    TCPSegment* m_tcpHeader = NULL;
+    UDPSegment* m_udpHeader = NULL;
+    HTTPPacket* m_httpHeader = NULL;
 
-    const string *m_timeOfReceiving;
+
+    const string* m_timeOfReceiving;
 
 public:
     Packet();
@@ -43,6 +45,7 @@ public:
     std::string wlanHeaderInfo() const;
     std::string ipHeaderInfo() const;
     std::string tcpHeaderInfo() const;
+    std::string udpHeaderInfo() const;
 
     //assignment operator
     Packet& operator=(const Packet& other);

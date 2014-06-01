@@ -8,7 +8,7 @@
 using namespace std;
 
 string FilterTCP::tcpFilter(vector<string>& filterStringVector){
-    string tcpFilter("tcp ");
+    string tcpFilter;
     string& field = filterStringVector[0];
     string& operation = filterStringVector[1];
     string& value = filterStringVector[2];
